@@ -2,6 +2,16 @@
 
 ## Installation and setup 
 
+### Helper Scripts
+
+Please note: I've put together some helper scripts to perform a number of the steps shown below. 
+             The contents and a `README` to run those scripts can be found at: 
+			 ``` https://github.com/vinayvenkat/gke_k8s_deployer ```
+
+			 - For each step shown below, I will reference the helper script which 
+ 			   can potentially help simplify the process a litte bit! 
+
+
 #### kubectl 
 
 Please ensure that the `kubectl` tool in installed and available on your system. 
@@ -22,7 +32,8 @@ Instructions to install the Google cloud SKD can be found at: ```https://cloud.g
 
 Execute the following command:
 
-```kubectl create clusterrolebinding cluster-admin-binding \
+```
+	kubectl create clusterrolebinding cluster-admin-binding \
     --clusterrole=cluster-admin \
     --user=$(gcloud config get-value core/account)
 ```
