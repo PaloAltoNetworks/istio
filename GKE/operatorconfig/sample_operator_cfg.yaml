@@ -1,0 +1,56 @@
+# handler for adapter mygrpcadapter
+apiVersion: "config.istio.io/v1alpha2"
+kind: handler
+metadata:
+ name: h1
+ namespace: istio-system
+spec:
+ adapter: panstackdriver 
+ connection:
+   address: "panstackdriver:8889" #replaces at runtime by the test
+ params:
+   file_path: "/volume/logger.txt"
+   project_id: "cps-containers-dev"
+   log_prefix: "vv15_istio_log"
+---
+# Configuration for logentry instances
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance 
+metadata:
+  name: vvnewlog
+  namespace: istio-system
+spec:
+  template: logentry
+  params:
+   severity: '"Default"'
+   timestamp: request.time
+   variables:
+    responseSize: response.size | 0
+    sourceIp: source.ip | ip("0.0.0.0")
+    destinationIp: destination.ip | ip("0.0.0.0")
+    sourceUser: source.user | ""
+    method: request.method | ""
+    url: request.path | ""
+    protocol: request.scheme | "http"
+    responseCode: response.code | 200
+    responseSize: response.size |2048 
+    requestSize: request.size | 512 
+    latency: response.duration | "0ms"
+    destinationService: destination.service | "service unknown"
+    destinationUid: destination.uid | "dest uid unknown"
+    requestPath : request.path | "req path unknown"
+---
+# Rule to send logentry instances to the fluentd handler
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+  name: r1 
+  namespace: istio-system
+spec:
+  #match: "true" # match for all requests
+  match: destination.service.startsWith("product")
+  actions:
+   - handler: h1
+     instances:
+     - vvnewlog
+---
