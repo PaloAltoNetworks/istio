@@ -26,14 +26,14 @@ Instructions to install the Google cloud SKD can be found at: ```https://cloud.g
 #### Download the kubernetes (GKE) credentials to your local system. 
 
  - You will need the GKE cluster name, the zone name and the project id 
- - Execute ```gcloud container clusters get-credentials <cluster name> --zone <zone name> --project <project name>
+ - Execute ``` gcloud container clusters get-credentials <cluster name> --zone <zone name> --project <project name> ```
 
 #### Create a kubernetes cluster role binding 
 
 Execute the following command:
 
 ```
-	kubectl create clusterrolebinding cluster-admin-binding \
+kubectl create clusterrolebinding cluster-admin-binding \
     --clusterrole=cluster-admin \
     --user=$(gcloud config get-value core/account)
 ```
