@@ -8,8 +8,8 @@ Please note: I've put together some helper scripts to perform a number of the st
              The contents and a `README` to run those scripts can be found at: 
 			 ``` https://github.com/vinayvenkat/gke_k8s_deployer ```
 
-			 - For each step shown below, I will reference the helper script which 
- 			   can potentially help simplify the process a litte bit! 
+- For each step shown below, I will reference the helper script which 
+  can potentially help simplify the process a litte bit! 
 
 
 #### kubectl 
@@ -38,6 +38,8 @@ Execute the following command:
     --user=$(gcloud config get-value core/account)
 ```
 
+`Script link`: ``` https://github.com/vinayvenkat/gke_k8s_deployer/blob/master/cluster-role.sh ```
+
 #### Ensure Stackdriver Logging is enabled for the cluster
 
 This deployement is only applicable on GKE. 
@@ -49,6 +51,9 @@ Please follow the instructions at the following to enable stack driver logging:
 
 Instructions can be found at: ```https://istio.io/docs/setup/kubernetes/download-release/```
 
+`Script link`: ``` https://github.com/vinayvenkat/gke_k8s_deployer/blob/master/install_istio.sh ```
+
+
 #### Setup and deploy the Istio Custom Resource Definitions 
 
    Note: the following paths are dependent the `pwd` directory being the directory 
@@ -58,6 +63,7 @@ Instructions can be found at: ```https://istio.io/docs/setup/kubernetes/download
    Execute the following command: 
    ``` kubectl apply -f install/kubernetes/istio-demo-auth.yaml ```
 
+`Script link`: ``` https://github.com/vinayvenkat/gke_k8s_deployer/blob/master/istio-cfg.sh ```
 
 #### Verify the Istio installation 
 
@@ -124,6 +130,13 @@ Security adapter on the kubernetes cluster.
 You will see the Palo Alto Networks security adapter's container. In this case it is: 
 `panstackdriver-6789d7d88f-49tmk`
 
+
+## Install an application onto the Kubernetes cluster 
+
+`Script link`: ``` https://github.com/vinayvenkat/gke_k8s_deployer/blob/master/manage_app.sh ```
+
+Details on how to setup the export variables to be able to access the cluster are also 
+provided in the script shown above. 
 
 ## Run some traffic to any applications deployed on your cluster
 
