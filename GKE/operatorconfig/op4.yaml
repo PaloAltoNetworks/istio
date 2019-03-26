@@ -1,0 +1,93 @@
+# handler for adapter pansecurityadapter
+apiVersion: "config.istio.io/v1alpha2"
+kind: handler
+metadata:
+ name: h1
+ namespace: istio-system
+spec:
+ adapter: pansecurityadapter 
+ connection:
+   address: "pansecurityadapter:9693"
+ params:
+   file_path: "/tmp/logger.txt"
+   project_id: "cps-containers-dev"
+   log_prefix: "vv15_istio_log"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance
+metadata:
+ name: icheck
+ namespace: istio-system
+spec:
+ template: authorization
+ params:
+   subject:
+     user: source.principal | request.auth.principal | "" 
+     groups: request.auth.principal | ""
+     properties:
+      source_namespace: source.workload.namespace | "unknown_namespace"
+      source_service: source.workload.name | "unknown_service"
+   action:
+     namespace: destination.namespace | ""
+     service: destination.service.name | "" 
+     method: destination.principal | ""
+     path: request.path | ""
+     properties: 
+      custom_header: source.user | "hello"
+      protocol: context.protocol | "unknown_protocol"
+---
+
+# rule to dispatch to handler h1
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+ name: r1
+ namespace: istio-system
+spec:
+ match: destination.service.name != "istio-ingressgateway" && source.workload.name != "istio-ingressgateway"
+ actions:
+ - handler: h1.istio-system
+   instances:
+   - icheck
+---
+# Configuration for logentry instances
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance 
+metadata:
+  name: vvnewlog
+  namespace: istio-system
+spec:
+  template: logentry
+  params:
+   severity: '"Default"'
+   timestamp: request.time
+   variables:
+    responseSize: response.size | 0
+    sourceIp: source.ip | ip("0.0.0.0")
+    destinationIp: destination.ip | ip("0.0.0.0")
+    sourceUser: source.principal | ""
+    method: request.method | ""
+    url: request.path | ""
+    protocol: request.scheme | "http"
+    responseCode: response.code | 200
+    responseSize: response.size |2048 
+    requestSize: request.size | 512 
+    latency: response.duration | "0ms"
+    destinationService: destination.service.name | "service unknown"
+    destinationUid: destination.uid | "dest uid unknown"
+    requestPath : request.path | "req path unknown"
+---
+# Rule to send logentry instances to the fluentd handler
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+  name: r2 
+  namespace: istio-system
+spec:
+  match: "true" # match for all requests
+  #match: destination.service.startsWith("product")
+  actions:
+   - handler: h1
+     instances:
+     - vvnewlog
+---

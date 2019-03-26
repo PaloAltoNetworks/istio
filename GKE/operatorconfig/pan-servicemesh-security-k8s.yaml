@@ -1,46 +1,49 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: panstackdriver 
+  name: pansecurityadapter 
   namespace: istio-system
   labels:
-    app: panstackdriver 
+    app: pansecurityadapter 
 spec:
   type: ClusterIP
   ports:
   - name: grpc
     protocol: TCP
-    port: 8889
-    targetPort: 8889
+    port: 9693 
+    targetPort: 9693 
   selector:
-    app: panstackdriver 
+    app: pansecurityadapter 
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: panstackdriver 
+  name: pansecurityadapter 
   namespace: istio-system
   labels:
-    app: panstackdriver 
+    app: pansecurityadapter 
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: panstackdriver 
+        app: pansecurityadapter 
       annotations:
         sidecar.istio.io/inject: "false"
         scheduler.alpha.kubernetes.io/critical-pod: ""
     spec:
       containers:
-      - name: panstackdriver 
-        image: vinayvenkat/panstackdriver:latest
+      - name: pansecurityadapter 
+        image: vinayvenkat/pan-servicemesh-security:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 8889
+        - containerPort: 9693 
         volumeMounts:
         - name: transient-storage
           mountPath: /volume
+        env:
+        - name: SECURITY_POLICY_API_ENDPOINT
+          value: "http://10.28.3.59:9080" 
       volumes:
       - name: transient-storage
         emptyDir: {}
