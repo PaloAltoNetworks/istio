@@ -16,6 +16,7 @@ the deployment configuration for the Security Policy Adapter.
 The following figure illustrates the complete deployment options for the Security Policy 
 Adapter along with the options for either Panorama or Policy Simulator. 
 
+![Alt text](https://github.com/PaloAltoNetworks/istio/blob/master/GKE/NGFW-Policy-deployment.png  "NGFW Policy Adapter Deployment Options")
 
 ## Important Sections
 
