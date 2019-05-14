@@ -7,7 +7,7 @@ The Palo Alto Networks ```NGFW Policy Engine``` security adapter for Istio, give
 
 # Deployment Models for the NGFW Policy Adapter
 
-The NGFW Policy Engine is designed to retrieve security policies from either Panorama or 
+The NGFW Policy Engine is designed to retrieve security policies from **either** Panorama **or**
 a Policy Simulator.
 
 The choice of either using Panorama or the Policy Simulator is specified while providing 
@@ -38,9 +38,22 @@ policies into policies that can be applied on the Kubernetes and Istio systems.
 
 ### Configure the ```NGFW Policy Engine``` to communicate with Panorama 
 
-TODO
+1. Specify the type of the policy endpoint to be "panorama" 
+2. Obtain the public IP of the Panorama device.  
+3. Specify the port number of the policy endpoint as: "443"
+4. Input the username of the Panorama device in base64 encoding: echo "<username>" | base64
+   - Copy and paste the output into the "username for Panorama" text input field.
+5. Input the password of the Panorama device in base64 encoding: echo "<password> " | base64 
+   - Copy and paste the output into the "password for Panorama" text input field.
+
+Once the fields have been input, press the "Deploy" button at the bottom of the page. 
+This will then deploy the NGFW Policy Engine onto the selected kubernetes cluster. 
 
 ### Configure the ```NGFW Policy Engine``` to communicate with the Security Policy Management Service
+
+The deployment and configuration of the Security Policy Simulator Management service is a 2-step process. 
+
+#### Step 1 Deploy the Simulator Service onto the Kubernetes cluster
 
 (1) Clone the Security Policy Management Service from the git repo 
 	- git clone https://github.com/vinayvenkat/pan_istio_policy_simulator.git
@@ -77,4 +90,17 @@ Output will resemble: ```
 
 Note: You will need this IP when editing the yaml file pertaining to the Palo Alto Networks Security Adapter deployment config.
 
+#### Step 2 Input the Security Policy Simulator service information into the market place deployment fields. 
 
+1. In the "Specify the type of the Policy endpoint" field: Enter "simulator"
+
+2. In the "Specify the IP Address or the DNS name of the security policy endpoint" field, input the 
+   IP address retrieved from the step above. This will be the value of the podIP field as shown in the example above. 
+
+3. In the "Specify the port number on which the security policy API endpoint is accessed on" input: 9080 
+
+4. There is currently no authentication associated with the use with the policy simulator. 
+   Hence leave the username and password fields empty. 
+
+Once the fields have been input, press the "Deploy" button at the bottom of the page. 
+This will then deploy the NGFW Policy Engine onto the selected kubernetes cluster. 
