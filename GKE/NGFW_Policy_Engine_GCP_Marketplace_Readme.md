@@ -5,13 +5,25 @@ The Palo Alto Networks ```NGFW Policy Engine``` security adapter for Istio, give
   running within the service mesh
 - and the ability to enforce policy on the micro-services workloads running inside the mesh
 
+# Detailed steps to deploy the NGFW Policy Engine onto a Kubernetes cluster
+
+The following figure shows the user interface associated with deploying 
+the adapter from the Google Marketplace. 
+
+![Alt text](https://github.com/PaloAltoNetworks/istio/blob/master/GKE/NGFW-Policy-inteface.png "Deploy NGFW Policy Engine from the Google marketplace")
+
+## Important Note: There are two options with regard to specifying the Security Policy Endpoint
+
+The following sections discuss the options as well the the steps to configure and deploy the security policy 
+adapter along with the security policy endpoint.
+
 # Deployment Models for the NGFW Policy Adapter
 
 The NGFW Policy Engine is designed to retrieve security policies from **either** Panorama **or**
 a Policy Simulator.
 
 The choice of either using Panorama or the Policy Simulator is specified while providing 
-the deployment configuration for the Security Policy Adapter. 
+the deployment configuration for the Security Policy Adapter (as shown in the figure above). 
 
 The following figure illustrates the complete deployment options for the Security Policy 
 Adapter along with the options for either Panorama or Policy Simulator. 
