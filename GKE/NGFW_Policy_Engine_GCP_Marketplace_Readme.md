@@ -5,7 +5,7 @@ The Palo Alto Networks ```NGFW Policy Engine``` security adapter for Istio, give
   running within the service mesh
 - and the ability to enforce policy on the micro-services workloads running inside the mesh
 
-# Detailed steps to deploy the NGFW Policy Engine onto a Kubernetes cluster
+# Detailed steps to deploy the NGFW Policy Engine onto a Kubernetes cluster from the GCP Market place
 
 The following figure shows the user interface associated with deploying 
 the adapter from the Google Marketplace. 
